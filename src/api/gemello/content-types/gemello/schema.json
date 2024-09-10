@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gemellos",
+  "info": {
+    "singularName": "gemello",
+    "pluralName": "gemellos",
+    "displayName": "Gemello",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "assetbundle": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "gemellos"
+    }
+  }
+}
