@@ -61,12 +61,11 @@ module.exports = createCoreController('api::gemello.gemello', ({ strapi }) => ({
             return ctx.unauthorized('You must be logged in to create a Gemello.');
         }
 
-        // Debug: Log the request body to ensure it's being received correctly
         console.log('Request Body:', ctx.request.body);
 
         // Handle file upload and other form fields
         const { title } = ctx.request.body;
-        const { files } = ctx.request; // Access uploaded files
+        const { files } = ctx.request;
 
         if (!title || !files || !files.assetbundle) {
             return ctx.badRequest('Title and assetbundle are required.');
@@ -74,8 +73,8 @@ module.exports = createCoreController('api::gemello.gemello', ({ strapi }) => ({
 
         // Upload the assetbundle file
         const uploadedFiles = await strapi.plugins.upload.services.upload.upload({
-            data: {}, // No additional data
-            files: files.assetbundle, // The file to upload
+            data: {},
+            files: files.assetbundle,
         });
 
         // Prepare the data for the creation
@@ -90,6 +89,23 @@ module.exports = createCoreController('api::gemello.gemello', ({ strapi }) => ({
 
         return gemello;
     },
+    async findCustom(ctx) {
+        return "Haha Changed"
+    },
+    async find(ctx) {
+        const { user } = ctx.state;
+
+        if (!user) {
+            return ctx.unauthorized('You must be logged in to view your Gemellos.');
+        }
+
+        const gemellos = await strapi.entityService.findMany('api::gemello.gemello', {
+            filters: { owner: user.id },
+            populate: '*',
+        });
+
+        return gemellos;
+    }
 }));
 
 
